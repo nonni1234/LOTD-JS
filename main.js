@@ -1,7 +1,9 @@
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token,user,password,host,port,database } = require('./config.json');
-const { getTracks } = require('./api/tracks.js')
+const { initTracks } = require('./api/tracks.js');
+const { generateLyric, newLOTD } = require('./api/lyric.js');
 
+
+require('dotenv').config();
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -57,4 +59,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 
 // Log in to Discord with your client's token
-client.login(token);
+initTracks().then(()=> {
+	client.login(process.env.token);
+	//newLOTD()
+})

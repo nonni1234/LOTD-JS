@@ -1,6 +1,6 @@
-const { query } = require('./index.js')
+const { query } = require('./index.js');
 
-let tracks
+let tracks;
 
 const initTracks = async () => {
     const result = await query('SELECT * FROM tracks;');
@@ -8,11 +8,9 @@ const initTracks = async () => {
     tracks = result.rows;
 }
 
-initTracks();
-
 const getTracks = () => {
     return tracks
 }
 
 
-module.exports = { getTracks }
+module.exports = { getTracks, initTracks }
