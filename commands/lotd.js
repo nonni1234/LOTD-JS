@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { newLOTD } = require('../api/lyric.js');
+const { getLOTD } = require('../api/lyric.js');
 
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
 		.setName('lotd')
 		.setDescription('Shows the current lyric of the day'),
 	async execute(interaction) {
-		const lyric = await newLOTD()
-		console.log(lyric);
+		const { lyric } = await getLOTD();
+		await interaction.reply(`The current LOTD is:\n` + lyric)
 	},
 };

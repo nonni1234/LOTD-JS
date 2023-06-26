@@ -28,15 +28,26 @@ const generateLyric = () => {
 }
 
 
+const getLOTD = async () => {
+    const res = await query(`SELECT trackid, lyric FROM lyrics ORDER BY time DESC LIMIT 1;`);
+    const { trackid, lyric } = res.rows[0];
+    console.log("TRACKID: " + trackid);
+    return { trackid, lyric };
+}
+
+
 const newLOTD = async () => {
     const { track, lyric} = generateLyric();
-    console.log(lyric);
-    query(`INSERT INTO lyrics (time, trackid, lyric)
-    VALUES (CURRENT_TIMESTAMP, ${track.trackid}, $$${lyric}$$);`).then(res => {
+    lyric.replace("\n", "");
+    try {
+        const res = await query(`INSERT INTO lyrics (time, trackid, lyric) VALUES (CURRENT_TIMESTAMP, ${track.trackid}, $$${lyric}$$);`);
+        if (res.rowCount > 0) console.log("LOTD Updated Successfully");
+        else throw Error("Insert Failed");
         return lyric
-    }).catch(err => {
-        console.error("Something went wrong during insert " + err.message)
-    })
-    
+    } catch (error) {
+        console.error("Unexpected Error: " + error.message);
+        return undefined
+    }
+
 }
-module.exports = { newLOTD, generateLyric }
+module.exports = { newLOTD, generateLyric, getLOTD }
