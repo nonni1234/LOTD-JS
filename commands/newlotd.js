@@ -15,7 +15,6 @@ module.exports = {
         else {
             const { trackid } = await getLOTD(); 
             const lyric = await newLOTD();
-            console.log("LYRIC: " + lyric);
             const prevtrack = getTrack(trackid);
             console.log("TID:" + trackid);
             await interaction.reply(`The answer to the **last** LOTD was: ||${prevtrack.name}||\n**The Lyric Of The Day**\n\n♪ ${lyric} ♪`)
