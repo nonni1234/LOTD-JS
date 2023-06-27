@@ -1,5 +1,5 @@
 const { query } = require('./index.js');
-const { getTracks } = require('./tracks.js');
+const { getTracks, getTrack } = require('./tracks.js');
 
 const randint = (min, max) => {
     min = Math.ceil(min);
@@ -30,6 +30,9 @@ const generateLyric = () => {
 
 const getLOTD = async () => {
     const res = await query(`SELECT trackid, lyric FROM lyrics ORDER BY time DESC LIMIT 1;`);
+    if (res.rowCount === 0) {
+        return {undefined,undefined}
+    }
     const { trackid, lyric } = res.rows[0];
     console.log("TRACKID: " + trackid);
     return { trackid, lyric };
@@ -51,4 +54,17 @@ const newLOTD = async () => {
     }
 
 }
-module.exports = { newLOTD, generateLyric, getLOTD }
+
+const newLOTDWithMessage = async () => {
+    const { trackid } = await getLOTD(); 
+    const lyric = await newLOTD();
+
+    if (trackid === undefined) {
+        return `**The Lyric Of The Day**\n\n♪ ${lyric} ♪`
+    } else {
+        const prevtrack = getTrack(trackid);
+        return `The answer to the **last** LOTD was: ||${prevtrack.name}||\n**The Lyric Of The Day**\n\n♪ ${lyric} ♪`
+    }
+}
+
+module.exports = { newLOTDWithMessage, generateLyric, getLOTD }

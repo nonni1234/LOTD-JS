@@ -1,7 +1,7 @@
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { initTracks } = require('./api/tracks.js');
-const { generateLyric, newLOTD, getLOTD } = require('./api/lyric.js');
-
+const { generateLyric, newLOTDWithMessage, getLOTD } = require('./api/lyric.js');
+const cron = require('node-cron');
 
 require('dotenv').config();
 
@@ -28,11 +28,28 @@ commandFiles.forEach(file => {
 	}
 
 })
-
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
+	console.log("Setting schedule LOTD post to midnight New York (EST) Time ")
+
+	const cronTask = async () => {
+		console.log("Running scheduled task");
+		const message = await newLOTDWithMessage();
+		// console.log("Message: " + message);
+		const channel = await c.channels.fetch(process.env.lotdchannelid);
+		// console.log(channel);
+		channel.send(message);
+
+		// Makes task only run once
+	}
+
+	cronTask(); // Run task once
+
+	const task = cron.schedule('0 0 * * *', cronTask, {
+		timezone: 'America/New_York'
+	} )
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -56,6 +73,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 	}
 });
+
 
 
 // Log in to Discord with your client's token
