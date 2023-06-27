@@ -38,7 +38,8 @@ const getLOTD = async () => {
 
 const newLOTD = async () => {
     let { track, lyric} = generateLyric();
-    lyric = lyric.replace("\n", " ");
+    // uncomment line below to remove linebreaks from lyric
+    // lyric = lyric.replace("\n", " ");
     try {
         const res = await query(`INSERT INTO lyrics (time, trackid, lyric) VALUES (CURRENT_TIMESTAMP, ${track.trackid}, $$${lyric}$$);`);
         if (res.rowCount > 0) console.log("LOTD Updated Successfully");
