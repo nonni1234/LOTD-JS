@@ -6,7 +6,6 @@ const initTracks = async () => {
     const result = await query('SELECT * FROM tracks;');
     console.log("Tracks",result.rows.map((r)=>r.name));
     tracks = result.rows;
-    console.log(tracks[0]);
 }
 
 const getTracks = () => {
@@ -14,7 +13,7 @@ const getTracks = () => {
 }
 
 const getTrack = (id) => {
-    console.log(id);
+    // console.log(id);
     return tracks.find(t => t.trackid === id);
 }
 

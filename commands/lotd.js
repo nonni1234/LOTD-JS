@@ -9,6 +9,6 @@ module.exports = {
 	async execute(interaction) {
 		const { lyric } = await getLOTD();
 		if (lyric === undefined) await interaction.reply('There is currently no lyric of the day')
-		else await interaction.reply(`The current LOTD is:\n` + lyric)
+		else await interaction.reply(`The current LOTD is:\n` + `♪ ${lyric} ♪`)
 	},
 };

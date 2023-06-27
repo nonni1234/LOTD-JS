@@ -41,12 +41,8 @@ client.once(Events.ClientReady, c => {
 		const channel = await c.channels.fetch(process.env.lotdchannelid);
 		// console.log(channel);
 		channel.send(message);
-
-		// Makes task only run once
 	}
-
-	cronTask(); // Run task once
-
+	
 	const task = cron.schedule('0 0 * * *', cronTask, {
 		timezone: 'America/New_York'
 	} )
@@ -79,5 +75,4 @@ client.on(Events.InteractionCreate, async interaction => {
 // Log in to Discord with your client's token
 initTracks().then(()=> {
 	client.login(process.env.token);
-	getLOTD();
 })

@@ -34,7 +34,7 @@ const getLOTD = async () => {
         return {undefined,undefined}
     }
     const { trackid, lyric } = res.rows[0];
-    console.log("TRACKID: " + trackid);
+    // console.log("TRACKID: " + trackid);
     return { trackid, lyric };
 }
 
@@ -60,10 +60,10 @@ const newLOTDWithMessage = async () => {
     const lyric = await newLOTD();
 
     if (trackid === undefined) {
-        return `**The Lyric Of The Day**\n\n♪ ${lyric} ♪`
+        return `**The Lyric Of The Day**\n\n♪ ${lyric} ♪\n\nMake your guess in #bot-spam using /guess`
     } else {
         const prevtrack = getTrack(trackid);
-        return `The answer to the **last** LOTD was: ||${prevtrack.name}||\n**The Lyric Of The Day**\n\n♪ ${lyric} ♪`
+        return `The answer to the **last** LOTD was: ||${prevtrack.name}||\n**The Lyric Of The Day**\n\n♪ ${lyric} ♪\n\nMake your guess in <#${process.env.botspamid}> using /guess`
     }
 }
 
