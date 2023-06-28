@@ -13,7 +13,6 @@ DROP TABLE IF EXISTS Users CASCADE ;
 DROP TABLE IF EXISTS lyrics CASCADE ;
 
 
-
 CREATE TABLE Artists
 (
     ID   SERIAL PRIMARY KEY,
@@ -56,7 +55,8 @@ CREATE TABLE Users
     discordID        INT PRIMARY KEY,
     name             varchar(34) NOT NULL,
     correctGuesses   INT DEFAULT 0,
-    incorrectGuesses INT DEFAULT 0
+    incorrectGuesses INT DEFAULT 0,
+    lastCorrectGuess TIMESTAMP NULL
 );
 
 CREATE TABLE lyrics
@@ -66,7 +66,6 @@ CREATE TABLE lyrics
     trackID INT  NOT NULL,
     lyric   text NOT NULL,
     FOREIGN KEY (trackID) REFERENCES tracks (trackID)
-
 );
 
 
